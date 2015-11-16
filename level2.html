@@ -1,0 +1,190 @@
+<html>
+<head>
+	<title>
+		FullFoolishParty
+	</title>
+</head>
+<body onkeypress="myKeyPress(event)" onload="start2()" style="background-color: black;">
+	<script type="text/javascript">
+		//get the value in GET 
+					function getUrlVars() {
+			var vars = {};
+			var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+			vars[key] = value;
+			});
+			return vars;
+			}
+		//setting up the level
+		var ready=0;
+		var victories=[0,0,0,0];
+		var points=[0,0,0,0];
+	    function start2(){
+			var winner1=getUrlVars()['win'];
+			victories[(winner1-1)]++;
+			setTimeout(function(){
+						
+						document.getElementById("instr").innerHTML="Press your key as fast as you can. :) READY...";
+			
+						setTimeout(function(){
+							document.getElementById("instr").innerHTML="GO!";
+							setTimeout(function(){
+									document.getElementById("instr").innerHTML="";
+									ready=1;
+									
+							},500);
+						},3500);
+					},500);
+			
+			
+		}
+		//check the victory
+		function checkWinner(){
+			if ((points[0]==2500)||(points[1]==2500)||(points[2]==2500)||(points[3]==2500)){
+				ready=0;
+				return true;
+			}
+		}
+		//find the winner1
+		function whoWins(){
+
+				var i=0;
+				var winner=-1;
+				while (i<4){
+					if (points[i]==2500){
+						
+						winner=i;
+						winner++;
+						return winner;
+					}
+					i++;
+				}
+			
+			
+		}
+		//handle of keypressing and winning rules
+        function myKeyPress(e){
+
+            var keynum;
+
+            if(window.event){ // IE					
+            	keynum = e.keyCode;
+            }else
+                if(e.which){ // Netscape/Firefox/Opera					
+            		keynum = e.which;
+                 }
+			//the first player reach 2500 points, game continues
+			if (!(checkWinner())){
+				//handle player one
+				if (((String.fromCharCode(keynum)=="q") || (String.fromCharCode(keynum)=="Q")) && (ready==1)){
+						
+					document.getElementById("P1g").style.width="96px";
+					document.getElementById("P1g").style.height="96px";
+					setTimeout(animatePlayer1, 150);
+					function animatePlayer1() {
+					   
+						document.getElementById("P1g").style.width="64px";
+						document.getElementById("P1g").style.height="64px";
+					}
+					
+					points[0]+=100;
+					
+						
+				}
+					//handle player two
+						if (((String.fromCharCode(keynum)=="p") || (String.fromCharCode(keynum)=="P")) && (ready==1)){
+						
+						document.getElementById("P2g").style.width="96px";
+						document.getElementById("P2g").style.height="96px";
+						setTimeout(animatePlayer2, 150);
+						function animatePlayer2() {
+						   
+							document.getElementById("P2g").style.width="64px";
+							document.getElementById("P2g").style.height="64px";
+						}
+						
+						
+						points[1]+=100;
+						
+						
+					}
+					
+					//handle player three
+						if (((String.fromCharCode(keynum)=="z") || (String.fromCharCode(keynum)=="Z")) && (ready==1)){
+						
+						document.getElementById("P3g").style.width="96px";
+						document.getElementById("P3g").style.height="96px";
+						setTimeout(animatePlayer3, 150);
+						function animatePlayer3() {
+						   
+							document.getElementById("P3g").style.width="64px";
+							document.getElementById("P3g").style.height="64px";
+						}
+						
+						
+						points[2]+=100;
+						
+			
+						
+					}
+					
+					//handle player four
+						if (((String.fromCharCode(keynum)=="m") || (String.fromCharCode(keynum)=="M")) && (ready==1)){
+						
+						document.getElementById("P4g").style.width="96px";
+						document.getElementById("P4g").style.height="96px";
+						setTimeout(animatePlayer4, 150);
+						function animatePlayer4() {
+						   
+							document.getElementById("P4g").style.width="64px";
+							document.getElementById("P4g").style.height="64px";
+						}
+						
+						
+						points[3]+=100;
+						
+						
+						
+						
+					}
+			}else{
+					victories[whoWins()-1]=victories[whoWins()-1]+1;
+					
+					var k=1;
+					while (k<5){
+						if (k!=whoWins()){
+							document.getElementById("P"+k+"g").src="P"+k+"s.png";
+							
+						}
+						k++;
+					}
+					setTimeout(function(){
+						document.getElementById("instr").innerHTML="Player "+(whoWins())+" wins!";
+						setTimeout(function(){
+							document.getElementById("instr").innerHTML="Loading level 3";
+							setTimeout(function(){
+								window.location.href="level3.html?win1="+victories[0]+"&win2="+victories[1]+"&win3="+victories[2]+"&win4="+victories[3];
+							},2000);
+						},2000);
+					},1);
+					
+			}
+			
+			
+		}
+			
+				
+        		
+</script>
+
+
+<div align="center">
+    <img src="P1h.png" id="P1g" style="position:fixed; left:0px;">
+	<img src="P2h.png" id="P2g" style="position:fixed; right:0px;">
+	<h1 style="position: center; color:white; font-family:Arial">Level 2</h1>
+	<h1 style="position: center; color:white; font-family:Arial" id="instr"></h1>
+	<img src="P3h.png" id="P3g" style="position:fixed; left:0px; bottom:0px;">
+	<img src="P4h.png" id="P4g" style="position:fixed; right:0px; bottom:0px;">
+	<p id="ready">0</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<html>
+<head>
+	<title>
+		FullFoolishParty
+	</title>
+</head>
+<body onkeypress="myKeyPress(event)" onload="start2()" style="background-color: black;">
+	<script type="text/javascript">
+		//get the value in GET 
+					function getUrlVars() {
+			var vars = {};
+			var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+			vars[key] = value;
+			});
+			return vars;
+			}
+		//setting up the level
+		var parole=["claymore","lucidity","esoteric","speedful","declined","romanise","forgoing","intonate","rafferty","unhidden","sardonic","override","telefilm","turandot","tomogram","resinoid","variance","resonant","prisoner","flighter","entrance","province","jackboot","militate"];
+		var ready=0;
+		var victories=[0,0,0,0];
+		var parolePlayers=["","","",""];
+		var completamentoParole=["","","",""];
+		var progressPlayer=[0,0,0,0];
+	    function start2(){
+			victories[0]=getUrlVars()['win1'];
+			victories[1]=getUrlVars()['win2'];
+			victories[2]=getUrlVars()['win3'];
+			victories[3]=getUrlVars()['win4'];
+			for (i=0;i<4;i++){
+				if (victories[i]>2){
+					victories[i]=2;
+				}
+			}
+			setTimeout(function(){
+						
+						document.getElementById("instr").innerHTML="Complete your word before your opponents.... READY....";
+			
+						setTimeout(function(){
+							document.getElementById("instr").innerHTML="GO!";
+							setTimeout(function(){
+									document.getElementById("instr").innerHTML="";
+									
+									parolePlayers[0]=parole[Math.floor(Math.random()*parole.length)];
+									parolePlayers[1]=parole[Math.floor(Math.random()*parole.length)];
+									parolePlayers[2]=parole[Math.floor(Math.random()*parole.length)];
+									parolePlayers[3]=parole[Math.floor(Math.random()*parole.length)];
+									
+									while ((parolePlayers[3]==parolePlayers[2]) || (parolePlayers[1]==parolePlayers[0]) || (parolePlayers[0]==parolePlayers[2]) || (parolePlayers[2]==parolePlayers[1]) || (parolePlayers[0]==parolePlayers[3]) ){
+										parolePlayers[0]=parole[Math.floor(Math.random()*parole.length)];
+										parolePlayers[1]=parole[Math.floor(Math.random()*parole.length)];
+										parolePlayers[2]=parole[Math.floor(Math.random()*parole.length)];
+										parolePlayers[3]=parole[Math.floor(Math.random()*parole.length)];
+										
+									}
+									document.getElementById("w1").innerHTML=parolePlayers[0];
+									document.getElementById("w2").innerHTML=parolePlayers[1];
+									document.getElementById("w3").innerHTML=parolePlayers[2];
+									document.getElementById("w4").innerHTML=parolePlayers[3];
+									ready=1;
+							},500);
+						},3500);
+					},500);
+			
+			
+		}
+		//check the victory
+		function checkWinner(){
+			if ( (progressPlayer[0]==(parolePlayers[0].length-1)) || (progressPlayer[1]==(parolePlayers[1].length-1)) || (progressPlayer[2]==(parolePlayers[2].length-1)) || (progressPlayer[3]==(parolePlayers[3].length-1)) ) { 
+			ready=0;
+			return true;
+				
+			}
+		}
+		//find the winner1
+		function whoWins(){
+		    	var i=0;
+				var winner=-1;
+				while (i<4){
+					if (completamentoParole[i]==parolePlayers[i].substr(0,parolePlayers[i].length-1)){
+						winner=i;
+						winner++;
+						
+						document.getElementById("g"+(i+1)).innerHTML=parolePlayers[i];
+						
+						return winner;
+					}
+					i++;
+				}
+			
+			
+		}
+		//handle of keypressing and winning rules
+        function myKeyPress(e){
+
+            var keynum;
+
+            if(window.event){ // IE					
+            	keynum = e.keyCode;
+            }else
+                if(e.which){ // Netscape/Firefox/Opera					
+            		keynum = e.which;
+                 }
+			//the first player whom finish his word, wins the level
+			if (!(checkWinner())){
+				//handle typing of chars
+				if (((String.fromCharCode(keynum)==parolePlayers[0][progressPlayer[0]]) || (String.fromCharCode(keynum)==parolePlayers[1][progressPlayer[1]]) || (String.fromCharCode(keynum)==parolePlayers[2][progressPlayer[2]]) || (String.fromCharCode(keynum)==parolePlayers[3][progressPlayer[3]]) ) && (ready==1)){
+					//if char is part of player1's word
+					
+					if ((String.fromCharCode(keynum)==parolePlayers[0][progressPlayer[0]])){
+						document.getElementById("P1g").style.width="96px";
+						document.getElementById("P1g").style.height="96px";
+						setTimeout(animatePlayer1, 150);
+						function animatePlayer1() {
+						   
+							document.getElementById("P1g").style.width="64px";
+							document.getElementById("P1g").style.height="64px";
+						}
+						completamentoParole[0]+=parolePlayers[0][progressPlayer[0]];
+						document.getElementById("g1").innerHTML=completamentoParole[0];
+						progressPlayer[0]++;
+					}	
+					//else player 2
+					if ((String.fromCharCode(keynum)==parolePlayers[1][progressPlayer[1]])){
+						document.getElementById("P2g").style.width="96px";
+						document.getElementById("P2g").style.height="96px";
+						setTimeout(animatePlayer2, 150);
+						function animatePlayer2() {
+						   
+							document.getElementById("P2g").style.width="64px";
+							document.getElementById("P2g").style.height="64px";
+						}
+						completamentoParole[1]+=parolePlayers[1][progressPlayer[1]];
+						document.getElementById("g2").innerHTML=completamentoParole[1];
+						progressPlayer[1]++;
+					}	
+					//else player 3
+					if ((String.fromCharCode(keynum)==parolePlayers[2][progressPlayer[2]])){
+						document.getElementById("P3g").style.width="96px";
+						document.getElementById("P3g").style.height="96px";
+						setTimeout(animatePlayer3, 150);
+						function animatePlayer3() {
+						   
+							document.getElementById("P3g").style.width="64px";
+							document.getElementById("P3g").style.height="64px";
+						}
+						completamentoParole[2]+=parolePlayers[2][progressPlayer[2]];
+						document.getElementById("g3").innerHTML=completamentoParole[2];
+						progressPlayer[2]++;
+					}	
+					//in the end player 4
+					if ((String.fromCharCode(keynum)==parolePlayers[3][progressPlayer[3]])){
+						document.getElementById("P4g").style.width="96px";
+						document.getElementById("P4g").style.height="96px";
+						setTimeout(animatePlayer4, 150);
+						function animatePlayer4() {
+						   
+							document.getElementById("P4g").style.width="64px";
+							document.getElementById("P4g").style.height="64px";
+						}
+						completamentoParole[3]+=parolePlayers[3][progressPlayer[3]];
+						document.getElementById("g4").innerHTML=completamentoParole[3];
+						progressPlayer[3]++;
+					}	
+					
+					
+					
+						
+				}
+					
+			}else{
+					victories[whoWins()-1]=victories[whoWins()-1]+1;
+					
+					var k=1;
+					while (k<5){
+						if (k!=whoWins()){
+							document.getElementById("P"+k+"g").src="P"+k+"s.png";
+							
+						}
+						k++;
+					}
+					setTimeout(function(){
+						
+						document.getElementById("instr").innerHTML="Player "+(whoWins())+" wins!";
+						setTimeout(function(){
+							
+							document.getElementById("instr").innerHTML="Loading level 4";
+							setTimeout(function(){
+								window.location.href="level4.html?win1="+victories[0]+"&win2="+victories[1]+"&win3="+victories[2]+"&win4="+victories[3];
+							},2000);
+						},2000);
+					},1);
+					
+			}
+			
+			
+		}
+			
+				
+        		
+</script>
+
+
+<div align="center">
+    <img src="P1h.png" id="P1g" style="position:fixed; left:0px;">
+	<p id="w1" style="position: fixed; left: 0px; top:100px; color:white; font-family:Arial; font-weight:bold;"></p>	
+	<p id="g1" style="position: fixed; left: 0px; top:125px; color:#00ff00; font-family:Arial; font-weight:bold;"></p>
+	<img src="P2h.png" id="P2g" style="position:fixed; right:0px;">
+	<p id="w2" style="position: fixed; right: 0px; top:100px; color:white; font-family:Arial; font-weight:bold;"></p>
+	<p id="g2" style="position: fixed; right: 0px; top:125px; color:#00ff00; font-family:Arial; font-weight:bold;"></p>
+	<h1 style="position: center; color:white; font-family:Arial">Level 3</h1>
+	<h1 style="position: center; color:white; font-family:Arial" id="instr"></h1>
+
+	<img src="P3h.png" id="P3g" style="position:fixed; left:0px; bottom:0px;">
+	<p id="w3" style="position: fixed; left: 0px; bottom:100px; color:white; font-family:Arial; font-weight:bold;"></p>
+	<p id="g3" style="position: fixed; left: 0px; bottom:75px; color:#00ff00; font-family:Arial; font-weight:bold;"></p>
+	<img src="P4h.png" id="P4g" style="position:fixed; right:0px; bottom:0px;">
+	
+	<p id="w4" style="position: fixed; right: 0px; bottom:100px; color:white; font-family:Arial; font-weight:bold;"></p>
+	<p id="g4" style="position: fixed; right: 0px; bottom:75px; color:#00ff00; font-family:Arial; font-weight:bold;"></p>
+</div>
+</body>
+</html>
